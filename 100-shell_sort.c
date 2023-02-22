@@ -1,40 +1,35 @@
 #include "sort.h"
-
 /**
-*swap - the positions of two elements into an array
-*@array: array
-*@item1: array element
-*@item2: array element
-*/
-void swap(int *array, int item1, int item2)
-{
-
-	int tmp;
-
-	tmp = array[item1];
-	array[item1] = array[item2];
-	array[item2] = tmp;
-}
-/**
- * shell_sort - function that sorts an array of integers in ascending
- * order using the Shell sort algorithm, using the Knuth sequence
+ * shell_sort -Sort an array using shell_sort algorithm
+ * @array: array
  * @size: size of the array
- * @array: list with numbers
- */
+ * Return: NULL
+ **/
 void shell_sort(int *array, size_t size)
 {
-	size_t gap = 1, i, index = 0;
+	unsigned int gap = 1, i, j;
+	int temp;
 
-	if (array == NULL || size < 2)
+	if (array == NULL)
+		return;
+	if (size < 2)
 		return;
 	while (gap < size / 3)
-		gap = 3 * gap + 1;
-	while (gap >= 1)
+		gap = gap * 3 + 1;
+
+	while (gap > 0)
 	{
 		for (i = gap; i < size; i++)
-			for (index = i; index >= gap &&
-			 (array[index] < array[index - gap]); index -= gap)
-				swap(array, index, index - gap);
+		{
+			temp = array[i];
+			j = i;
+			while (j >= gap && array[j - gap] > temp)
+			{
+				array[j] = array[j - gap];
+				j -= gap;
+			}
+			array[j] = temp;
+		}
 		print_array(array, size);
 		gap /= 3;
 	}
